@@ -1,66 +1,31 @@
-## Foundry
+1. (Relative Stability) Pegged -> $1.00 
+    - Achieved via Chainlink Price Feed.
+    - Set a function to exchange ETH & BTC for their $ equivalent.
+2. Stability Mechanism (Minting): Algorithmic (Decentralised)
+    - People can only mint the stablecoin if they have enough collateral (programatic)
+3. Collateral Type: Exogenous (Crypto)
+    - ETH (Probably WETH)
+    - BTC (Probably WBTC)
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+## Developing the DSC Engine
+We begin by defining the functions / interface the contract should adhere to.
+```
+function depositCollateralAndMintDsc() external {}
+function depositCollateral() external {}
+function redeemCollateralForDsc() external {}
+function redeemCollateral() external {}
+function mintDsc() external {}
+function burnDsc() external {}
+function liquidate() external {}
+function getHealthFactor() external view {}
 ```
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+The first thing the user would do is deposit collateral:
+- Parameters:
+    1. `address` of token being deposited as collateral
+    2. `amount` of collateral to deposit. [Must be greater than zero]
+- Considerations: 
+    1. We should ideally be keeping track of "for a given token used as collateral how much has the user provided".
+    2. How can we get the real-time USD value of the users deposited collateral: Chainlink Pricefeeds. (PriceFeeds have their own address, we would need to map the collateralTokenAddress to the priceFeedAdress)
+    3. We should not accept all collateral only WETH & WBTC, so we must ensure we are only able to accept two types of collateral and keep track of this. (use constructor to set this up.)
