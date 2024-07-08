@@ -40,3 +40,8 @@ Once collateral has been deposited successfully, we must decide on how much DSC 
     2. Once the above is determined determine how many DSC tokens to mint based on this.
     3. Send these tokens to the user.
     4. Perhaps _mint_ may not be concerned with this, but also consider how to decide how the users collateral ratio / health factor varies as their collateral changes in value over time. 
+
+
+- Calculate health factor function
+- set health factor if debt is 0
+- added a bunch of view functions. 
